@@ -15,3 +15,5 @@ Snake 2.1: Thêm màn hình Game Over khi thua
 Snake 2.2: Thêm độ khó vào Menu
 
 Snake 2.3: Cho phép chơi lại
+
+Snake 2.4: Thêm tính điểm
