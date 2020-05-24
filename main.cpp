@@ -25,14 +25,12 @@ struct Lead
         SDL_SetRenderDrawColor(renderer, 0, 255, 255, 0);
         SDL_RenderFillRect(renderer, &lead);
     }
-
     void move()
     {
         x += stepX; if(x > 800) x -= 800; if(x < 0) x += 800;
         y += stepY; if(y > 600) y -= 600; if(y < 0) y += 600;
         cout << x << " " << y << endl;
     }
-
     moveLeft()
     {
         if(stepX == 10 && stepY == 0){}
@@ -41,7 +39,6 @@ struct Lead
             stepY = 0;
         }
     }
-
     moveRight()
     {
         if(stepX == -10 && stepY == 0){}
@@ -50,7 +47,6 @@ struct Lead
             stepY = 0;
         }
     }
-
     moveDown()
     {
         if(stepX == 0 && stepY == -10){}
@@ -59,7 +55,6 @@ struct Lead
             stepX = 0;
         }
     }
-
     moveUp()
     {
         if(stepX == 0 && stepY == 10){}
@@ -68,7 +63,6 @@ struct Lead
             stepX = 0;
         }
     }
-
     bool inside(int minX, int minY, int maxX, int maxY)
     {
         return (minX < x && minY < y && x + size <= maxX && y + size <= maxY);
@@ -82,7 +76,12 @@ struct Body
     Body* next;
     Body* head;
     Body* prev;
-    Body(int _x, int _y, Body* _next)
+
+    int R;
+    int G;
+    int B;
+
+    Body(int _x, int _y, Body* _next, int _R, int _G, int _B)
     {
         x = _x;
         y = _y;
@@ -97,19 +96,23 @@ struct Body
         body.y = y;
         body.w = 10;
         body.h = 10;
-        SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+        SDL_SetRenderDrawColor(renderer, 255, R, G, B);
         SDL_RenderFillRect(renderer, &body);
     }
 
-    void addLast(int _x, int _y)
+    void addLast(int _x, int _y, int _R, int _G, int _B)
     {
-        Body* newBody = new Body(_x, _y, NULL);
+        Body* newBody = new Body(_x, _y, NULL, _R, _G, _B);
         Body *p = head;
         while(p->next != NULL){
             p = p -> next;
         }
         p -> next = newBody;
         newBody -> prev = p;
+
+   /*     R = _R;
+        G = _G;
+        B = _B;*/
     }
 };
 
@@ -149,12 +152,12 @@ int main(int argc, char* argv[])
     SDL_Event e;
     bool quit = false;
 
-    Body *head = new Body(lead.x - 10, lead.y, NULL);            //Tạo thân rắn (khúc đầu tiền)
+    Body *head = new Body(lead.x - 10, lead.y, NULL, 0, 255, 255);            //Tạo thân rắn (khúc đầu tiền)
     head->head = head;                                           //
-    Body *p = new Body(lead.x - 10, lead.y, NULL);
+    Body *p = new Body(lead.x - 10, lead.y, NULL, 0, 255, 255);
     head->x = lead.x -10;
     head->y = lead.y;
-    Food food(300, 300);                                                   // Tạo thức ăn
+    Food food(rand() % 70 * 10 + 50, rand() % 50 * 10 + 50);                                                   // Tạo thức ăn
 //    head->addLast(100, 100);head->addLast(100, 100);head->addLast(100, 100);
 
     // Cập nhật tọa độ đầu mới -> Vẽ thân vẽ đầu -> in -> Cập nhật tọa độ thân -> Kiểm tra có ăn được mồi không -> Nhận tín hiệu từ bàn phím -> Vòng lặp mới
@@ -196,14 +199,15 @@ int main(int argc, char* argv[])
         }
 
 
-        int a = rand();           //Tạo số ngẫu nhiên để tạo tọa độ mồi ngẫu nhiên
+        int a = rand();           //Tạo số ngẫu nhiên để tạo tọa độ mồi ngẫu nhiên và tạo màu ngẫu nhiên cho phần thân mới
         int b = rand();
+        int c = rand();
         if(lead.x == food.x && lead.y == food.y){          //Nếu ăn được mồi
             food.x = 50 + a % 70 * 10;                     //Thì tạo mồi mới
             food.y = 50 + b % 50 * 10;
 
             length++;                                      //Tăng chiều dài thêm 1
-            head->addLast(-1, -1);
+            head->addLast(-1, -1, a % 256, b % 256, c % 256);
         }
 
         SDL_Delay(30);
