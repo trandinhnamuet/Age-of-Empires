@@ -1,7 +1,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "Function.h"
-
+#include <ctime>
 
 using namespace std;
 
@@ -101,9 +101,33 @@ struct Body
     }
 };
 
-int main(int argc, char* argv[])             
+struct Food{
+    int x;
+    int y;
+
+    Food(int _x, int _y)
+    {
+        x = _x;
+        y = _y;
+    }
+    void render(SDL_Renderer* renderer)
+    {
+        SDL_Rect body;
+        body.x = x;
+        body.y = y;
+        body.w = 10;
+        body.h = 10;
+        SDL_SetRenderDrawColor(renderer, 255, 200, 200, 255);
+        SDL_RenderFillRect(renderer, &body);
+    }
+};
+
+
+
+int main(int argc, char* argv[])
 {
     int i = 0;
+    srand(time(0));
     int length = 1;   // Độ dài thân rắn
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -116,36 +140,66 @@ int main(int argc, char* argv[])
     Body *head = new Body(lead.x - 10, lead.y, NULL);            //Tạo thân rắn (khúc đầu tiền)
     head->head = head;                                           //
     Body *p = new Body(lead.x - 10, lead.y, NULL);
-    head->x = lead.x + 100;
+    head->x = lead.x -10;
     head->y = lead.y;
-        
-        
-    // Cập nhật tọa độ đầu mới -> Vẽ thân vẽ đầu -> in -> Nhận tín hiệu từ bàn phím -> Cập nhật tọa độ thân -> Vòng lặp mới
-    
+    Food food(300, 300);                                                   // Tạo thức ăn
+//    head->addLast(100, 100);head->addLast(100, 100);head->addLast(100, 100);
+
+    // Cập nhật tọa độ đầu mới -> Vẽ thân vẽ đầu -> in -> Cập nhật tọa độ thân -> Kiểm tra có ăn được mồi không -> Nhận tín hiệu từ bàn phím -> Vòng lặp mới
+
     while(true)  //box.inside(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
     {
         lead.move();                 //Cập nhật tọa độ đầu rắn
 
+
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Màu nền
         SDL_RenderClear(renderer);                                             //Xóa màn hình cũ
+
+        food.render(renderer);
+
         p = head;                                                                                        //Con trỏ nháp p kiểu Body
         p->render(renderer);                             // Vẽ khúc thân đầu tiên
-
         if(length >= 2){
-            while(p != NULL)           //Vẽ khúc thân thứ 2 trở đi
-            {
+            do{
+                p = p->next;                                                            //Vẽ khúc thân thứ 2 trở đi
                 p->render(renderer);
-                p = p->next;
             }
+            while(p->next != NULL);
         }
 
         lead.render(renderer);             //Vẽ đầu rắn
         SDL_RenderPresent(renderer);                                          //Cập nhật màn hình( đẩy những thứ hiện tại lên màn hình)
 
 
+        head->x = lead.x;
+        head->y = lead.y;                            //Cập nhật tọa độ thân rắn khúc 1
+
+        if(length >= 2){                //Cập nhật tọa độ thân rắn từ khúc 2 trở đi
+            do{
+                p->x = p->prev->x;
+                p->y = p->prev->y;
+                p = p->prev;
+            }
+            while(p != head);
+        }
+
+   /*             if(true){              //Nếu ăn được mồi thì thêm 1 đoạn thân
+            head->addLast((p->prev)->x, (p->prev)->y);
+            cout << "----" << i << "------";
+            length++;
+        }
+        i++;*/
+
+        int a = rand();
+        int b = rand();
+        if(lead.x == food.x && lead.y == food.y){
+            food.x = 50 + a % 70 * 10;
+            food.y = 50 + b % 50 * 10;
+            i++;
+
+        }
+
         SDL_Delay(30);
-
-
         if ( SDL_PollEvent(&e) == 0) continue;
         // Nếu sự kiện là kết thúc (như đóng cửa sổ) thì thoát khỏi vòng lặp
         if (e.type == SDL_QUIT) break;
@@ -162,23 +216,8 @@ int main(int argc, char* argv[])
         		default: break;
 			}
         }
-        
-        
-        head->x = lead.x;
-        head->y = lead.y;                            //Cập nhật tọa độ thân rắn mới
-        
-            /*    if(true){              //Nếu ăn được mồi thì thêm 1 đoạn thân
-            head->addLast((p->prev)->x, (p->prev)->y);
-            cout << "----" << i << "------";
-        }
-        i++;*/
-        
-        
-        
-        
-    }
 
-//    waitUntilKeyPressed();
+    }
     quitSDL(window, renderer);
     return 0;
 }
