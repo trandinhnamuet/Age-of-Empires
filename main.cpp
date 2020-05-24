@@ -22,7 +22,7 @@ struct Lead
         lead.y = y;
         lead.w = size;
         lead.h = size;
-        SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+        SDL_SetRenderDrawColor(renderer, 0, 255, 255, 0);
         SDL_RenderFillRect(renderer, &lead);
     }
 
@@ -183,20 +183,15 @@ int main(int argc, char* argv[])
             while(p != head);
         }
 
-   /*             if(true){              //Nếu ăn được mồi thì thêm 1 đoạn thân
-            head->addLast((p->prev)->x, (p->prev)->y);
-            cout << "----" << i << "------";
-            length++;
-        }
-        i++;*/
 
-        int a = rand();
+        int a = rand();           //Tạo số ngẫu nhiên để tạo tọa độ mồi ngẫu nhiên
         int b = rand();
-        if(lead.x == food.x && lead.y == food.y){
-            food.x = 50 + a % 70 * 10;
+        if(lead.x == food.x && lead.y == food.y){          //Nếu ăn được mồi
+            food.x = 50 + a % 70 * 10;                     //Thì tạo mồi mới
             food.y = 50 + b % 50 * 10;
-            i++;
 
+            length++;                                      //Tăng chiều dài thêm 1
+            head->addLast(-1, -1);
         }
 
         SDL_Delay(30);
