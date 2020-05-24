@@ -28,33 +28,45 @@ struct Lead
 
     void move()
     {
-        x += stepX;
-        y += stepY;
+        x += stepX; if(x > 800) x -= 800; if(x < 0) x += 800;
+        y += stepY; if(y > 600) y -= 600; if(y < 0) y += 600;
         cout << x << " " << y << endl;
     }
 
     moveLeft()
     {
-        stepX = -10;
-        stepY = 0;
+        if(stepX == 10 && stepY == 0){}
+        else{
+            stepX = -10;
+            stepY = 0;
+        }
     }
 
     moveRight()
     {
-        stepX = 10;
-        stepY = 0;
+        if(stepX == -10 && stepY == 0){}
+        else{
+            stepX = 10;
+            stepY = 0;
+        }
     }
 
     moveDown()
     {
-        stepY = 10;
-        stepX = 0;
+        if(stepX == 0 && stepY == -10){}
+        else{
+            stepY = 10;
+            stepX = 0;
+        }
     }
 
     moveUp()
     {
-        stepY = -10;
-        stepX = 0;
+        if(stepX == 0 && stepY == 10){}
+        else{
+            stepY = -10;
+            stepX = 0;
+        }
     }
 
     bool inside(int minX, int minY, int maxX, int maxY)
@@ -147,7 +159,7 @@ int main(int argc, char* argv[])
 
     // Cập nhật tọa độ đầu mới -> Vẽ thân vẽ đầu -> in -> Cập nhật tọa độ thân -> Kiểm tra có ăn được mồi không -> Nhận tín hiệu từ bàn phím -> Vòng lặp mới
 
-    while(true)  //box.inside(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+    while(true)
     {
         lead.move();                 //Cập nhật tọa độ đầu rắn
 
