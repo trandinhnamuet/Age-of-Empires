@@ -141,6 +141,7 @@ struct Food{
 
 int main(int argc, char* argv[])
 {
+    int hardLevel = 50;   //Độ khó
     int i = 0;
     srand(time(0));
     int length = 1;   // Độ dài thân rắn
@@ -158,7 +159,7 @@ int main(int argc, char* argv[])
     head->x = lead.x -10;
     head->y = lead.y;
     Food food(rand() % 70 * 10 + 50, rand() % 50 * 10 + 50);                                                   // Tạo thức ăn
-//    head->addLast(100, 100);head->addLast(100, 100);head->addLast(100, 100);
+
 
     // Cập nhật tọa độ đầu mới -> Vẽ thân vẽ đầu -> in -> Cập nhật tọa độ thân -> Kiểm tra có ăn được mồi không -> Nhận tín hiệu từ bàn phím -> Vòng lặp mới
 
@@ -209,6 +210,8 @@ int main(int argc, char* argv[])
 
             length++;                                      //Tăng chiều dài thêm 1
             head->addLast(-1, -1, a % 256, b % 256, c % 256);
+            hardLevel -= 5;                              //Tăng độ khó
+            if(hardLevel <= 0) hardLevel = 1;             //Đảm bảo độ khó không vi phạm
         }
 
     //    cout << "+++++++++++";
@@ -224,7 +227,7 @@ int main(int argc, char* argv[])
         }
 
 
-        SDL_Delay(30);
+        SDL_Delay(hardLevel);
         if ( SDL_PollEvent(&e) == 0) continue;
         // Nếu sự kiện là kết thúc (như đóng cửa sổ) thì thoát khỏi vòng lặp
         if (e.type == SDL_QUIT) break;
