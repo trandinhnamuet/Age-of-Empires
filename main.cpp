@@ -162,7 +162,7 @@ int main(int argc, char* argv[])
 
     // Cập nhật tọa độ đầu mới -> Vẽ thân vẽ đầu -> in -> Cập nhật tọa độ thân -> Kiểm tra có ăn được mồi không -> Nhận tín hiệu từ bàn phím -> Vòng lặp mới
 
-    while(true)
+    while(quit == false)
     {
         lead.move();                 //Cập nhật tọa độ đầu rắn
 
@@ -174,6 +174,7 @@ int main(int argc, char* argv[])
 
         p = head;                                                                                        //Con trỏ nháp p kiểu Body
         p->render(renderer);                             // Vẽ khúc thân đầu tiên
+
         if(length >= 2){
             do{
                 p = p->next;                                                            //Vẽ khúc thân thứ 2 trở đi
@@ -209,6 +210,19 @@ int main(int argc, char* argv[])
             length++;                                      //Tăng chiều dài thêm 1
             head->addLast(-1, -1, a % 256, b % 256, c % 256);
         }
+
+    //    cout << "+++++++++++";
+
+        if(length >= 3){
+            p = head; p = p->next; p = p->next;
+            while(p != NULL){
+                if(p->x == lead.x && p->y == lead.y){
+                    quit = true;
+                }
+                p = p->next;
+            }
+        }
+
 
         SDL_Delay(30);
         if ( SDL_PollEvent(&e) == 0) continue;
