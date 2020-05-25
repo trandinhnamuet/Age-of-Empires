@@ -6,6 +6,7 @@ Snake 1.2: Thân có nhiều màu
 
 Snake 1.3: Đâm vào thân -> chết
 
+Snake 1.4: Tăng độ khó sau từng con mồi ăn được
 
 
 Snake 2.0: Thêm Menu khởi động gồm Start, Exit
