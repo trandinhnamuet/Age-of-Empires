@@ -6,7 +6,7 @@ Snake 1.2: Thân có nhiều màu
 
 Snake 1.3: Đâm vào thân -> chết
 
-Snake 1.4: Tăng độ khó sau từng con mồi ăn được
+Snake 1.4: Tăng độ khó sau từng con mồi ăn được;   Snake 1.4.2: Rắn bắt đầu với 1 khối đầu, sửa lỗi khúc không tăng chiều dài sau khi ăn con mồi đầu tiên
 
 
 Snake 2.0: Thêm Menu khởi động gồm Start, Exit
