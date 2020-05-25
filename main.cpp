@@ -110,9 +110,6 @@ struct Body
         p -> next = newBody;
         newBody -> prev = p;
 
-   /*     R = _R;
-        G = _G;
-        B = _B;*/
     }
 };
 
@@ -161,21 +158,19 @@ int main(int argc, char* argv[])
     Food food(rand() % 70 * 10 + 50, rand() % 50 * 10 + 50);                                                   // Tạo thức ăn
 
 
-    // Cập nhật tọa độ đầu mới -> Vẽ thân vẽ đầu -> in -> Cập nhật tọa độ thân -> Kiểm tra có ăn được mồi không -> Nhận tín hiệu từ bàn phím -> Vòng lặp mới
-
+                                                                                                                                                                    // Cập nhật tọa độ đầu mới -> Vẽ thân vẽ đầu -> in -> Cập nhật tọa độ thân -> Kiểm tra có ăn được mồi không -> Nhận tín hiệu từ bàn phím -> Vòng lặp mới
     while(quit == false)
     {
         lead.move();                 //Cập nhật tọa độ đầu rắn
 
 
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Màu nền
+        SDL_SetRenderDrawColor(renderer, 50, 50, 50, 20); // Màu nền
         SDL_RenderClear(renderer);                                             //Xóa màn hình cũ
 
         food.render(renderer);
 
-        p = head;                                                                                        //Con trỏ nháp p kiểu Body
-        p->render(renderer);                             // Vẽ khúc thân đầu tiên
 
+        p = head;                                                                                        //Con trỏ nháp p kiểu Body
         if(length >= 2){
             do{
                 p = p->next;                                                            //Vẽ khúc thân thứ 2 trở đi
@@ -191,7 +186,7 @@ int main(int argc, char* argv[])
         head->x = lead.x;
         head->y = lead.y;                            //Cập nhật tọa độ thân rắn khúc 1
 
-        if(length >= 2){                //Cập nhật tọa độ thân rắn từ khúc 2 trở đi
+        if(length >= 2){                //Cập nhật tọa độ thân rắn
             do{
                 p->x = p->prev->x;
                 p->y = p->prev->y;
@@ -216,7 +211,7 @@ int main(int argc, char* argv[])
 
     //    cout << "+++++++++++";
 
-        if(length >= 3){
+        if(length >= 3){                                //Kiểm tra va chạm
             p = head; p = p->next; p = p->next;
             while(p != NULL){
                 if(p->x == lead.x && p->y == lead.y){
@@ -235,6 +230,8 @@ int main(int argc, char* argv[])
         if (e.type == SDL_KEYDOWN) {
         	switch (e.key.keysym.sym) {
         		case SDLK_ESCAPE:break;
+
+                case SDLK_a: hardLevel += 30;
 
         		case SDLK_LEFT: lead.moveLeft(); break;
             	case SDLK_RIGHT: lead.moveRight(); break;
